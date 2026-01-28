@@ -1,0 +1,19 @@
+services:
+  huaweicloud_agent:
+    container_name: flexnpu
+    image: ghcr.io/chenyujie/flexnpu:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - ghcr.io/chenyujie/flexnpu:latest
+    ports:
+      - "${WEB:-8080}:80"
+    volumes:
+      - ${HOME:-/root}/.cache/huggingface:/root/.cache/huggingface
+    env_file:
+      - path: ./.env
+        required: false
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
